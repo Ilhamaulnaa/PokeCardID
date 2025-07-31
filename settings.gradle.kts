@@ -17,6 +17,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            // kalau kamu pakai version catalog
+        }
+    }
 }
 
 rootProject.name = "PokeCardID"

@@ -4,6 +4,7 @@ import com.ilham.event.data.remote.service.PokeApiService
 import com.ilham.event.data.repository.PokemonRepository
 import com.ilham.event.utils.Constatnt.BASE_URL
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
@@ -14,11 +15,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-
+    @Provides
+    @Singleton
     fun providePokemonRepository(
         apiService: PokeApiService
     ) = PokemonRepository(apiService)
 
+    @Provides
+    @Singleton
     fun providePokemonApi(): PokeApiService{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())

@@ -12,6 +12,8 @@ val Pink40 = Color(0xFF7D5260)
 
 val LightBlue = Color(0xFFBAC7FF)
 val lightGrey = Color(0xFFAAAAAA)
+val SecondaryDark = Color(0xFF232323)
+
 
 val HPColor = Color(0xFFF5FF00)
 val AtkColor = Color(1f, 0f, 0f, 0.66f)

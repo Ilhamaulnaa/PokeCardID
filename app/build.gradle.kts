@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.ksp.hilt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -38,7 +38,17 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+    configurations.all {
+        resolutionStrategy {
+
+        }
+    }
+}
+
+hilt {
+    enableAggregatingTask = false
 }
 
 dependencies {
@@ -59,6 +69,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(":data:event"))
+
+    //shimmer
+    implementation(libs.com.shimmer)
 
     //navigation
     implementation(libs.com.navigation.animation)
@@ -81,9 +94,7 @@ dependencies {
 
     //Retrofit
     implementation(libs.retrofit)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.retrofit.converter.gson)
-    implementation(libs.okhttp)
     implementation(libs.com.logging.interceptor)
 
     //Sqlite
@@ -93,5 +104,9 @@ dependencies {
 
     //timber
     implementation(libs.com.timber)
+
+//    implementation(libs.com.javapoet)
+
+//    implementation(libs.com.kotlinpoet)
 
 }
