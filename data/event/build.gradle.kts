@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.ksp.hilt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -32,6 +33,19 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    configurations.all {
+        resolutionStrategy {
+//            force("com.squareup:javapoet:1.13.0")
+        }
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+}
+
+hilt {
+    enableAggregatingTask = false
 }
 
 dependencies {
@@ -50,14 +64,16 @@ dependencies {
 
     //Retrofit
     implementation(libs.retrofit)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.retrofit.converter.gson)
-    implementation(libs.okhttp)
     implementation(libs.com.logging.interceptor)
 
     //Sqlite
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+//    implementation(libs.com.javapoet)
+
+//    implementation(libs.com.kotlinpoet)
 
 }
