@@ -5,23 +5,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,22 +31,20 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ilham.event.data.models.PokeListEntry
-import com.ilham.event.utils.Response
 import com.ilham.pokecardid.R
 import com.ilham.pokecardid.presentation.home.component.ItemList
 import com.ilham.pokecardid.presentation.home.component.LoadingItemListSection
+import com.ilham.pokecardid.ui.component.button.PrimaryButton
 import com.ilham.pokecardid.ui.component.searchbar.SearchBar
 import com.ilham.pokecardid.ui.theme.PokeCardIDTheme
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.ui.layout.ContentScale
+import com.ilham.pokecardid.ui.theme.poppinsFontFamily
 
 @ExperimentalLayoutApi
 @ExperimentalMaterial3Api
@@ -66,6 +60,14 @@ fun HomeScreen(
     val listState = rememberLazyGridState()
 
     var search by remember { mutableStateOf("") }
+
+    val filteredList = if (search.isBlank()) {
+        uiState.pokemon
+    } else {
+        uiState.pokemon.filter {
+            it.pokemonName.contains(search.trim(), ignoreCase = true)
+        }
+    }
 
     // Trigger next page saat scroll hampir ke bawah
     LaunchedEffect(listState) {
@@ -120,8 +122,7 @@ fun HomeScreen(
                         uiState.isLoading && uiState.pokemon.isEmpty() -> {
                             LoadingItemListSection()
                         }
-
-                        uiState.pokemon.isNotEmpty() -> {
+                        filteredList.isNotEmpty() -> {
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(2),
                                 state = listState,
@@ -130,7 +131,7 @@ fun HomeScreen(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 items(
-                                    items = uiState.pokemon,
+                                    items = filteredList,
                                     key = { entry -> entry.number }
                                 ) { entry ->
                                     ItemList(
@@ -151,7 +152,8 @@ fun HomeScreen(
                                                 .padding(16.dp),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            CircularProgressIndicator()
+//                                            CircularProgressIndicator()
+                                            LoadingItemListSection()
                                         }
                                     }
                                 }
@@ -159,22 +161,34 @@ fun HomeScreen(
                                 // Error Message
                                 uiState.errorMessage?.let { error ->
                                     item(span = { GridItemSpan(2) }) {
-                                        Text(
-                                            text = "Terjadi kesalahan: $error",
-                                            color = Color.Red,
-                                            modifier = Modifier.padding(8.dp)
+                                        RetrySection(
+                                            error = "Terjadi kesalahan: $error",
+                                            onRetry = {
+                                                viewModel.retryLoad()
+                                            }
                                         )
+//                                        Text(
+//                                            text = "Terjadi kesalahan: $error",
+//                                            color = Color.Red,
+//                                            modifier = Modifier.padding(8.dp)
+//                                        )
                                     }
                                 }
                             }
                         }
 
                         uiState.errorMessage != null -> {
-                            Text(
-                                text = "Terjadi kesalahan: ${uiState.errorMessage}",
-                                color = Color.Red,
-                                modifier = Modifier.padding(16.dp)
+                            RetrySection(
+                                error = "Terjadi kesalahan: ${uiState.errorMessage}",
+                                onRetry = {
+                                    viewModel.retryLoad()
+                                }
                             )
+//                            Text(
+//                                text = "Terjadi kesalahan: ${uiState.errorMessage}",
+//                                color = Color.Red,
+//                                modifier = Modifier.padding(16.dp)
+//                            )
                         }
 
                         else -> {
@@ -191,10 +205,23 @@ fun HomeScreen(
 
     }
 
-
 }
 
-
+@Composable
+fun RetrySection(
+    error: String,
+    onRetry: () -> Unit = {}
+) {
+    Column {
+        Text(text = error, color = Color.Red, fontSize = 18.sp, fontFamily = poppinsFontFamily)
+        Spacer(modifier = Modifier.height(8.dp))
+        PrimaryButton(
+            onClick = { onRetry() },
+            text = "Retry",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+        )
+    }
+}
 
 //@Composable
 //fun HomeScreen(

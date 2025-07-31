@@ -72,6 +72,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
+    fun retryLoad() {
+        currentPage = 0
+        isLoadingPage = false
+        _uiState.update { it.copy(pokemon = emptyList(), errorMessage = null) }
+        loadNextPage()
+    }
 
 }
