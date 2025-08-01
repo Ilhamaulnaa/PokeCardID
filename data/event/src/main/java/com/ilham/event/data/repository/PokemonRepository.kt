@@ -6,7 +6,7 @@ import com.ilham.event.data.remote.service.PokeApiService
 import com.ilham.event.utils.Response
 import javax.inject.Inject
 
-class PokemonRepository @Inject constructor(
+open class PokemonRepository @Inject constructor(
     private val api: PokeApiService
 ) {
 
@@ -19,7 +19,7 @@ class PokemonRepository @Inject constructor(
         return Response.Success(response)
     }
 
-    suspend fun getPokemonInfo(pokemonName: String): Response<PokemonResponse> {
+    open suspend fun getPokemonInfo(pokemonName: String): Response<PokemonResponse> {
         val response = try {
             api.getPokemonInfo(name = pokemonName)
         } catch (e: Exception){
