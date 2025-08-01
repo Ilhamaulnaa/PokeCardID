@@ -10,29 +10,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ilham.pokecardid.navigation.composableWithSlideHorizontalAnimation
 import com.ilham.pokecardid.presentation.home.HomeScreen
 import com.ilham.pokecardid.presentation.main.component.BottomBar
+import com.ilham.pokecardid.presentation.main.navigation.EmptyMainNavigator
+import com.ilham.pokecardid.presentation.main.navigation.MainNavigator
 import com.ilham.pokecardid.presentation.main.navigation.Screen
 import com.ilham.pokecardid.presentation.profile.ProfileScreen
+import com.ilham.pokecardid.ui.theme.PokeCardIDTheme
 
 @ExperimentalLayoutApi
 @ExperimentalMaterial3Api
 @ExperimentalAnimationApi
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    mainNavigator: MainNavigator
 ) {
-
-    val navController = rememberNavController()
 
     Scaffold(
         bottomBar = {
@@ -55,7 +61,9 @@ fun MainScreen(
             composableWithSlideHorizontalAnimation(
                 route = Screen.Home.route,
             ){
-                HomeScreen()
+                HomeScreen(
+                    navigateToDetailScreen = mainNavigator::navigateToDetailScreen
+                )
             }
             composableWithSlideHorizontalAnimation(
                 route = Screen.Profile.route
@@ -65,4 +73,19 @@ fun MainScreen(
         }
     }
 
+}
+
+@ExperimentalAnimationApi
+@ExperimentalLayoutApi
+@ExperimentalMaterial3Api
+@Preview
+@Composable
+private fun MainScreenPreview() {
+    PokeCardIDTheme {
+        Surface {
+            MainScreen(
+                mainNavigator = EmptyMainNavigator
+            )
+        }
+    }
 }
