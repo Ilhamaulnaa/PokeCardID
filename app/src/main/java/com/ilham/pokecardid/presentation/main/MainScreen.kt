@@ -4,7 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +12,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,12 +20,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.ilham.pokecardid.navigation.composableWithSlideHorizontalAnimation
+import com.ilham.pokecardid.presentation.auth.profile.ProfileScreen
 import com.ilham.pokecardid.presentation.home.HomeScreen
 import com.ilham.pokecardid.presentation.main.component.BottomBar
 import com.ilham.pokecardid.presentation.main.navigation.EmptyMainNavigator
 import com.ilham.pokecardid.presentation.main.navigation.MainNavigator
 import com.ilham.pokecardid.presentation.main.navigation.Screen
-import com.ilham.pokecardid.presentation.profile.ProfileScreen
 import com.ilham.pokecardid.ui.theme.PokeCardIDTheme
 
 @ExperimentalLayoutApi

@@ -69,7 +69,6 @@ fun HomeScreen(
         }
     }
 
-    // Trigger next page saat scroll hampir ke bawah
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { index ->
@@ -85,7 +84,7 @@ fun HomeScreen(
         Image(
             painter = painterResource(R.drawable.bg_home),
             contentDescription = null,
-            contentScale = ContentScale.Crop, // Crop atau Fit sesuai kebutuhan
+            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
 
@@ -153,7 +152,7 @@ fun HomeScreen(
                                             contentAlignment = Alignment.Center
                                         ) {
 //                                            CircularProgressIndicator()
-                                            LoadingItemListSection()
+                                            LoadingItemListSection(modifier = Modifier.fillMaxWidth())
                                         }
                                     }
                                 }
@@ -167,11 +166,6 @@ fun HomeScreen(
                                                 viewModel.retryLoad()
                                             }
                                         )
-//                                        Text(
-//                                            text = "Terjadi kesalahan: $error",
-//                                            color = Color.Red,
-//                                            modifier = Modifier.padding(8.dp)
-//                                        )
                                     }
                                 }
                             }
@@ -184,11 +178,6 @@ fun HomeScreen(
                                     viewModel.retryLoad()
                                 }
                             )
-//                            Text(
-//                                text = "Terjadi kesalahan: ${uiState.errorMessage}",
-//                                color = Color.Red,
-//                                modifier = Modifier.padding(16.dp)
-//                            )
                         }
 
                         else -> {
@@ -223,76 +212,6 @@ fun RetrySection(
     }
 }
 
-//@Composable
-//fun HomeScreen(
-//    modifier: Modifier = Modifier,
-//    viewModel: HomeViewModel = hiltViewModel(),
-//    navigateToDetailScreen: () -> Unit = {}
-//) {
-//
-//    val scrollState = rememberScrollState()
-//    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-//
-//    val pokemon = uiState.pokemon
-//
-//    var search by remember {
-//        mutableStateOf("")
-//    }
-//
-//    val onItemClick: (PokeListEntry) -> Unit = {
-//        navigateToDetailScreen()
-//    }
-//
-//    Scaffold(
-//        modifier = modifier.fillMaxSize(),
-//        containerColor = MaterialTheme.colorScheme.primary
-//    ){  paddingValues ->
-//        Box {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp)
-//                    .padding(paddingValues),
-//            ){
-//                Image(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .align(Alignment.CenterHorizontally),
-//                    painter = painterResource(R.drawable.pokemon_logo),
-//                    contentDescription = null
-//                )
-//                Spacer(modifier = Modifier.height(16.dp))
-//                SearchBar(
-//                    value = search,
-//                    onValueChanged = { search = it },
-//                    placeholder = "Yuk cari pokemon..."
-//                )
-//            }
-//            Spacer(modifier = Modifier.height(16.dp))
-//            if (pokemon is Response.Loading){
-//                LoadingItemListSection()
-//            }
-//            if (pokemon is Response.Success){
-//                FlowRow(
-//                    modifier = Modifier
-//                        .fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-//                    verticalArrangement = Arrangement.spacedBy(8.dp),
-//                    maxItemsInEachRow = 2
-//                ){
-//                    for (itemList in pokemon.data){
-//                        ItemList(
-//                            entry = itemList,
-//                            modifier = Modifier.weight(1f),
-//                            onItemClick = onItemClick
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//}
 
 @ExperimentalLayoutApi
 @ExperimentalMaterial3Api

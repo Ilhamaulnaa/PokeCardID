@@ -23,7 +23,8 @@ import java.util.Locale
 @ExperimentalAnimationApi
 @Composable
 fun NavGraph(
-    startDestination: String = Screen.Main.route
+//    startDestination: String = Screen.Main.route
+    startDestination: String = Screen.Login.route
 ) {
 
     val navController = rememberNavController()
@@ -34,10 +35,15 @@ fun NavGraph(
         startDestination = startDestination,
     ) {
         composableWithSlideHorizontalAnimation(route = Screen.Login.route){
-            LoginScreen()
+            LoginScreen(
+                navigateToRegisterScreen = navController::navigateToRegisterScreen,
+                navigateToMainScreen = mainNavigator::navigateToMainScreen
+            )
         }
         composableWithSlideHorizontalAnimation(route = Screen.Register.route){
-            RegisterScreen()
+            RegisterScreen(
+                navigateToLoginScreen = navController::navigateToLoginScreen
+            )
         }
         composableWithSlideHorizontalAnimation(route = Screen.Main.route){
             MainScreen(

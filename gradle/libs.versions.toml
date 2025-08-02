@@ -60,6 +60,7 @@ com-navigation-animation = { group = "com.google.accompanist", name = "accompani
 com-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "shimmer" }
 #com-javapoet = { group = "com.squareup", name = "javapoet", version.ref = "javapoet" }
 #com-kotlinpoet = { group = "com.squareup", name = "kotlinpoet-javapoet", version.ref = "javapoet" }
+androidx-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 
 [plugins]
